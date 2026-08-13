@@ -1,7 +1,0 @@
-name = "cartera-autopilot"
-compatibility_date = "2026-08-01"
-pages_build_output_dir = "public"
-
-# Variable opcional. Si la defines, /api/quotes usa Finnhub antes que Yahoo.
-# Configúrala como secret en el panel de Cloudflare, no aquí:
-#   wrangler pages secret put FINNHUB_API_KEY
