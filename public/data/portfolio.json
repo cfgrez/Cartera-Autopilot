@@ -16,8 +16,14 @@
       "buyDate": "2026-07-21",
       "buyPrice": 13.625,
       "stop": 13.48875,
-      "status": "open",
-      "lastPrice": 15.48
+      "status": "closed",
+      "sells": [
+        {
+          "date": "2026-08-13",
+          "qty": 3,
+          "price": 14.825
+        }
+      ]
     },
     {
       "id": 2,
@@ -76,7 +82,7 @@
       "ticker": "KGC",
       "qty": 3,
       "buyDate": "2026-07-21",
-      "buyPrice": 23.0,
+      "buyPrice": 23,
       "stop": 22.77,
       "status": "open",
       "lastPrice": 27.57
