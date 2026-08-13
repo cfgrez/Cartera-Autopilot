@@ -1,0 +1,17 @@
+name = "cartera-autopilot"
+main = "src/index.js"
+compatibility_date = "2026-08-01"
+
+# Los archivos de public/ se sirven como assets estáticos. Si la ruta no
+# corresponde a ningún archivo, la petición pasa al Worker (src/index.js),
+# que es lo que hace funcionar /api/quotes.
+[assets]
+directory = "./public"
+binding = "ASSETS"
+
+[observability]
+enabled = true
+
+# Variable opcional. Si la defines, /api/quotes usa Finnhub antes que Yahoo.
+# Configúrala como secret, nunca en este archivo:
+#   npx wrangler secret put FINNHUB_API_KEY
