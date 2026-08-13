@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Registrar movimientos · Cartera Autopilot</title>
+<meta name="color-scheme" content="light">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%232E5B87'/><path d='M16 7 V25 M7 16 H25' stroke='%23E6EAE5' stroke-width='3'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="stylesheet" href="assets/editor.css">
+</head>
+<body>
+<div class="wrap">
+
+  <div class="sheet hero">
+    <div class="topbar">
+      <p class="eyebrow">Cartera Autopilot · Registrar movimientos</p>
+      <div class="controls"><a class="btn" href="/">← Volver al dashboard</a></div>
+    </div>
+    <h1>Agregar un movimiento</h1>
+    <p class="sub">
+      Los cambios se aplican solo en esta pantalla. Cuando termines, copia o descarga el
+      JSON y reemplaza <code>public/data/portfolio.json</code> en el repositorio.
+      El sitio se actualiza con el push.
+    </p>
+    <p class="status" id="status">Cargando cartera…</p>
+  </div>
+
+  <!-- ================= FORMULARIO ================= -->
+  <section class="sheet">
+    <div class="sec-head"><h2>Nuevo movimiento</h2><span class="tag" id="pending">sin cambios</span></div>
+
+    <div class="tabs" role="tablist">
+      <button class="tab is-on" data-panel="buy" role="tab">Compra</button>
+      <button class="tab" data-panel="sell" role="tab">Venta</button>
+      <button class="tab" data-panel="flow" role="tab">Aporte o retiro</button>
+    </div>
+
+    <!-- ---- compra ---- -->
+    <form class="panel is-on" id="panel-buy" autocomplete="off">
+      <div class="fields">
+        <label>Acción
+          <input name="ticker" placeholder="AMD" required maxlength="12" class="up-case">
+        </label>
+        <label>Cantidad
+          <input name="qty" type="number" step="any" min="0" placeholder="2" required>
+        </label>
+        <label>Precio de compra
+          <input name="price" type="number" step="any" min="0" placeholder="178,40" required>
+        </label>
+        <label>Fecha
+          <input name="date" type="date" required>
+        </label>
+        <label>Stop <span class="opt">opcional</span>
+          <input name="stop" type="number" step="any" min="0" placeholder="176,62">
+        </label>
+      </div>
+      <p class="calc" id="buy-calc">—</p>
+      <div class="actions">
+        <button class="btn primary" type="submit">Agregar compra</button>
+        <button class="btn ghost" type="button" data-autostop>Stop a −1% del precio</button>
+      </div>
+      <p class="err" id="buy-err" hidden></p>
+    </form>
+
+    <!-- ---- venta ---- -->
+    <form class="panel" id="panel-sell" autocomplete="off">
+      <div class="fields">
+        <label>Posición
+          <select name="tradeId" required></select>
+        </label>
+        <label>Cantidad a vender
+          <input name="qty" type="number" step="any" min="0" required>
+        </label>
+        <label>Precio de venta
+          <input name="price" type="number" step="any" min="0" required>
+        </label>
+        <label>Fecha
+          <input name="date" type="date" required>
+        </label>
+      </div>
+      <div class="quick" id="sell-quick"></div>
+      <p class="calc" id="sell-calc">Elige una posición.</p>
+      <div class="actions">
+        <button class="btn primary" type="submit">Registrar venta</button>
+      </div>
+      <p class="err" id="sell-err" hidden></p>
+    </form>
+
+    <!-- ---- aporte / retiro ---- -->
+    <form class="panel" id="panel-flow" autocomplete="off">
+      <div class="fields">
+        <label>Tipo
+          <select name="kind">
+            <option value="in">Aporte de capital</option>
+            <option value="out">Retiro</option>
+          </select>
+        </label>
+        <label>Monto
+          <input name="amount" type="number" step="any" min="0" placeholder="500" required>
+        </label>
+        <label>Fecha
+          <input name="date" type="date" required>
+        </label>
+        <label>Nota <span class="opt">opcional</span>
+          <input name="note" placeholder="aporte mensual" maxlength="60">
+        </label>
+      </div>
+      <p class="calc" id="flow-calc">—</p>
+      <div class="actions">
+        <button class="btn primary" type="submit">Registrar movimiento</button>
+      </div>
+      <p class="err" id="flow-err" hidden></p>
+    </form>
+  </section>
+
+  <!-- ================= EFECTO ================= -->
+  <section class="sheet">
+    <div class="sec-head"><h2>Cómo queda la cartera</h2><span class="tag">Antes → después</span></div>
+    <p class="lede">Valorizado con los precios de respaldo del JSON, no en vivo: sirve para revisar que el movimiento cuadre, no como valorización de mercado.</p>
+    <div class="tbl-wrap">
+      <table class="diff">
+        <thead><tr><th>Concepto</th><th>Antes</th><th>Después</th><th>Cambio</th></tr></thead>
+        <tbody id="diff-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ================= MOVIMIENTOS AGREGADOS ================= -->
+  <section class="sheet" id="log-section" hidden>
+    <div class="sec-head"><h2>Movimientos de esta sesión</h2><span class="tag" id="log-count">0</span></div>
+    <ol class="log" id="log"></ol>
+  </section>
+
+  <!-- ================= SALIDA ================= -->
+  <section class="sheet">
+    <div class="sec-head"><h2>portfolio.json</h2><span class="tag">Para el repositorio</span></div>
+    <div class="out-actions">
+      <button class="btn primary" id="copy">Copiar al portapapeles</button>
+      <button class="btn" id="download">Descargar archivo</button>
+      <button class="btn ghost" id="reset">Descartar cambios</button>
+      <span class="hint" id="copy-hint"></span>
+    </div>
+    <pre class="json" id="json"></pre>
+    <p class="lede" style="margin-top:16px;">
+      Pega este contenido en <code>public/data/portfolio.json</code>, corre
+      <code>npm test</code> para que verifique que la caja cuadra, y haz
+      <code>git push</code>.
+    </p>
+  </section>
+
+  <footer>
+    <span>El editor no escribe en el repositorio: genera el JSON y tú lo versionas.</span>
+    <span>Seguimiento personal — no constituye asesoría de inversión</span>
+  </footer>
+</div>
+
+<script type="module" src="assets/editor.js"></script>
+</body>
+</html>

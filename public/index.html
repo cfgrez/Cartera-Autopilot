@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cartera Autopilot</title>
+<meta name="description" content="Seguimiento de rentabilidad y posiciones del fondo Autopilot.">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%2312634A'/><path d='M6 22 L13 12 L19 18 L26 8' stroke='%23E6EAE5' stroke-width='3' fill='none'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+<div class="wrap" id="app">
+
+  <!-- ================= ENCABEZADO ================= -->
+  <div class="sheet hero">
+    <div class="topbar">
+      <p class="eyebrow" id="fund-name">Cartera Autopilot</p>
+      <div class="controls">
+        <a class="btn" href="/editar.html">+ Movimiento</a>
+        <button id="toggle-live" class="btn" aria-pressed="true">Precios en vivo</button>
+        <button id="refresh" class="btn" title="Actualizar ahora">↻</button>
+      </div>
+    </div>
+
+    <h1>Rentabilidad del fondo</h1>
+    <p class="sub" id="fund-sub">Cargando…</p>
+
+    <div class="headline">
+      <div class="bignum"><span class="cur">US$</span><span id="total">—</span></div>
+      <div class="delta" id="delta">—</div>
+    </div>
+
+    <p class="status" id="status">Cargando…</p>
+
+    <div class="split" id="split"></div>
+    <dl class="cards" id="cards"></dl>
+  </div>
+
+  <!-- ================= GRÁFICOS ================= -->
+  <div class="grid2">
+    <section class="sheet">
+      <div class="sec-head"><h2>Composición</h2><span class="tag">Posiciones + caja</span></div>
+      <div class="chart donut" id="donut"></div>
+    </section>
+
+    <section class="sheet">
+      <div class="sec-head"><h2>Quién puso el resultado</h2><span class="tag">Por operación</span></div>
+      <div class="contrib" id="contrib"></div>
+    </section>
+  </div>
+
+  <section class="sheet">
+    <div class="sec-head"><h2>Dónde ha estado el dinero</h2><span class="tag">Caja vs. invertido</span></div>
+    <p class="lede">La banda inferior es el costo de lo invertido; la superior, la caja libre. El borde de arriba es capital contable: sube con cada cierre en ganancia y baja con cada cierre en pérdida.</p>
+    <div class="chart" id="timeline"></div>
+    <div class="chart-legend">
+      <span><i class="sw" style="background:rgba(18,99,74,.22);border:1px solid #12634A"></i>Invertido (costo)</span>
+      <span><i class="sw" style="background:rgba(46,91,135,.26);border:1px solid #2E5B87"></i>Caja libre</span>
+      <span><i class="sw dash"></i>Valor de mercado hoy</span>
+    </div>
+  </section>
+
+  <!-- ================= TABLAS ================= -->
+  <section class="sheet">
+    <div class="sec-head"><h2>Posiciones abiertas</h2><span class="tag" id="open-count">—</span></div>
+    <p class="lede">«Dist. stop» compara el precio actual con el stop registrado al abrir. Las filas marcadas cotizan por debajo de esa referencia.</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr>
+          <th>Acción</th><th>Cant.</th><th>Compra</th><th>Actual</th><th>Costo</th>
+          <th>Valor</th><th>Result.</th><th>%</th><th>Peso</th><th>Dist. stop</th>
+        </tr></thead>
+        <tbody id="open-body"></tbody>
+        <tfoot><tr class="total" id="open-total"></tr></tfoot>
+      </table>
+    </div>
+  </section>
+
+  <section class="sheet">
+    <div class="sec-head"><h2>Operaciones cerradas</h2><span class="tag" id="closed-count">—</span></div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr>
+          <th>Acción</th><th>Cierre</th><th>Días</th><th>Cant.</th><th>Compra</th>
+          <th>Venta</th><th>Invertido</th><th>Recibido</th><th>Result.</th><th>%</th>
+        </tr></thead>
+        <tbody id="closed-body"></tbody>
+        <tfoot><tr class="total" id="closed-total"></tr></tfoot>
+      </table>
+    </div>
+  </section>
+
+  <section class="sheet">
+    <div class="sec-head"><h2>Cómo se comporta el sistema</h2><span class="tag">Métricas</span></div>
+    <div class="tbl-wrap">
+      <table class="metrics">
+        <thead><tr><th>Indicador</th><th>Valor</th><th class="left">Lectura</th></tr></thead>
+        <tbody id="metrics-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    <span>Datos en <code>public/data/portfolio.json</code> · cotizaciones vía <code>/api/quotes</code></span>
+    <span>Seguimiento personal — no constituye asesoría de inversión</span>
+  </footer>
+</div>
+
+<script type="module" src="assets/app.js"></script>
+</body>
+</html>
