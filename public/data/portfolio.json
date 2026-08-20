@@ -116,8 +116,14 @@
       "buyDate": "2026-07-21",
       "buyPrice": 161.25,
       "stop": 159.6375,
-      "status": "open",
-      "lastPrice": 145.16
+      "status": "closed",
+      "sells": [
+        {
+          "date": "2026-08-20",
+          "qty": 1,
+          "price": 139.42
+        }
+      ]
     },
     {
       "id": 11,
