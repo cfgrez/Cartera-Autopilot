@@ -7,6 +7,7 @@
  */
 
 import { handleQuotes } from "./quotes.js";
+import { handlePortfolio } from "./portfolio.js";
 import { handleSave, saveStatus } from "./save.js";
 
 export default {
@@ -18,6 +19,12 @@ export default {
       if (request.method === "OPTIONS") return preflight("GET");
       if (request.method !== "GET") return notAllowed("GET");
       return handleQuotes(request, env, ctx);
+    }
+
+    if (pathname === "/api/portfolio") {
+      if (request.method === "OPTIONS") return preflight("GET");
+      if (request.method !== "GET") return notAllowed("GET");
+      return handlePortfolio(request, env, ctx);
     }
 
     if (pathname === "/api/save") {
