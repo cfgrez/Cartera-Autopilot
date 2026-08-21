@@ -1,4 +1,5 @@
 import { computeFund } from "./engine.js";
+import { loadPortfolio } from "./load.js";
 
 const REFRESH_MS = 60_000;
 const PALETTE = [
@@ -29,6 +30,7 @@ const pct = (n) => (n > 0 ? "+" : n < 0 ? "−" : "") + pctFmt.format(Math.abs(n
 const cls = (n) => (n > 0 ? "g" : n < 0 ? "r" : "m");
 
 let doc = null;
+let docSource = "bundle";
 let live = true;
 
 boot();
@@ -43,15 +45,20 @@ async function boot() {
   $("#refresh").addEventListener("click", () => render());
 
   try {
-    doc = await (await fetch("data/portfolio.json", { cache: "no-store" })).json();
+    ({ doc, source: docSource } = await loadPortfolio());
   } catch (err) {
-    $("#app").innerHTML =
-      `<p class="error">No se pudo leer <code>data/portfolio.json</code>: ${err.message}</p>`;
+    $("#app").innerHTML = `<p class="error">No se pudo leer la cartera: ${err.message}</p>`;
     return;
   }
 
   await render();
-  setInterval(() => live && render(), REFRESH_MS);
+  setInterval(async () => {
+    if (!live) return;
+    try {
+      ({ doc, source: docSource } = await loadPortfolio());
+    } catch { /* nos quedamos con la copia que ya teníamos */ }
+    render();
+  }, REFRESH_MS);
 }
 
 async function render() {

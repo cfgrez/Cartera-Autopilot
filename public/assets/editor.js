@@ -1,4 +1,5 @@
 import { computeFund, todayISO } from "./engine.js";
+import { loadPortfolio } from "./load.js";
 
 const money = new Intl.NumberFormat("es-CL", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const qtyFmt = new Intl.NumberFormat("es-CL", { maximumFractionDigits: 4 });
@@ -17,9 +18,9 @@ boot();
 
 async function boot() {
   try {
-    original = await (await fetch("data/portfolio.json", { cache: "no-store" })).json();
+    ({ doc: original } = await loadPortfolio({ fresh: true }));
   } catch (err) {
-    $("#status").textContent = `No se pudo leer data/portfolio.json: ${err.message}`;
+    $("#status").textContent = `No se pudo leer la cartera: ${err.message}`;
     $("#status").className = "status warn";
     return;
   }
@@ -27,6 +28,7 @@ async function boot() {
   draft = structuredClone(original);
   const restored = restore();
 
+  $("#status").textContent = "Cartera cargada.";
   $("#status").className = "status ok";
   $$("input[type=date]").forEach((i) => (i.value = todayISO()));
 
@@ -341,10 +343,7 @@ async function save() {
     refresh();
 
     const link = data.url ? ` <a href="${data.url}" target="_blank" rel="noopener">${data.commit}</a>` : "";
-    said(
-      `Guardado en GitHub${link}. Cloudflare está redesplegando: el dashboard ` +
-      `muestra los cambios en un par de minutos.`
-    );
+    said(`Guardado en GitHub${link}. El dashboard ya lo muestra al recargar.`);
   } catch (err) {
     said(`No se pudo contactar al servidor: ${err.message}`, true);
   } finally {
