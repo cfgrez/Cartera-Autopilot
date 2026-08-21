@@ -304,6 +304,7 @@ Otras definiciones que conviene tener claras:
   Alpha Vantage) y ajusta `src/quotes.js`.
 - Los precios llegan con retraso de hasta 15 minutos y las respuestas se cachean 60
   segundos en el borde.
+  
 - El cálculo no descuenta comisiones, spreads ni impuestos. Si tu bróker cobra por
   operación, la rentabilidad real es algo menor que la que muestra el dashboard.
 - Los ETF que reparten dividendos —como SGOV— bajan de precio en la fecha ex-dividendo.
