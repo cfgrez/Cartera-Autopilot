@@ -310,4 +310,4 @@ Otras definiciones que conviene tener claras:
 - Los ETF que reparten dividendos —como SGOV— bajan de precio en la fecha ex-dividendo.
   Como el dashboard mide solo precio, subestima el retorno de esas posiciones.
 
-Proyecto de seguimiento personal. No es asesoría de inversión.
+Proyecto de seguimiento personal. No es asesoría de inversión.   
