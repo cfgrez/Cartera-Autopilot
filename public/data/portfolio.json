@@ -84,8 +84,14 @@
       "buyDate": "2026-07-21",
       "buyPrice": 23,
       "stop": 22.77,
-      "status": "open",
-      "lastPrice": 27.57
+      "status": "closed",
+      "sells": [
+        {
+          "date": "2026-08-26",
+          "qty": 3,
+          "price": 32.87333
+        }
+      ]
     },
     {
       "id": 8,
@@ -176,6 +182,24 @@
       "stop": 73.1412,
       "status": "open",
       "lastPrice": 73.88
+    },
+    {
+      "id": 16,
+      "ticker": "QSR",
+      "qty": 1,
+      "buyDate": "2026-08-26",
+      "buyPrice": 80.96,
+      "status": "open",
+      "lastPrice": 80.96
+    },
+    {
+      "id": 17,
+      "ticker": "SKWD",
+      "qty": 2,
+      "buyDate": "2026-08-26",
+      "buyPrice": 57.77,
+      "status": "open",
+      "lastPrice": 57.77
     }
   ]
 }
