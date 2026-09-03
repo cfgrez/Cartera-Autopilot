@@ -200,6 +200,15 @@
       "buyPrice": 57.77,
       "status": "open",
       "lastPrice": 57.77
+    },
+    {
+      "id": 18,
+      "ticker": "DVN",
+      "qty": 2,
+      "buyDate": "2026-09-02",
+      "buyPrice": 49.03,
+      "status": "open",
+      "lastPrice": 49.03
     }
   ]
 }
