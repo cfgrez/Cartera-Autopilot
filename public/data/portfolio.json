@@ -257,6 +257,21 @@
           "price": 49.8155
         }
       ]
+    },
+    {
+      "id": 19,
+      "ticker": "ACM",
+      "qty": 2,
+      "buyDate": "2026-10-07",
+      "buyPrice": 59.025,
+      "status": "closed",
+      "sells": [
+        {
+          "date": "2026-10-22",
+          "qty": 2,
+          "price": 59.49
+        }
+      ]
     }
   ]
 }
